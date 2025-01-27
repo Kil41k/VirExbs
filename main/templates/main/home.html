@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="home-block">
+        <a href="{% url 'articles:create' %}"><button class="btn btn-success" style="background-color: blue;" type="submit">Create exhibition</button></a>
+        <a href="{% url 'articles:exhibitions' %}"><button class="btn btn-success"  type="submit" >Watch exhibition</button></a>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% if article %}
+        <img src="{{ article.image_4.url }}" alt="">
+        <h1>{{ article.description_3 }}</h1>
+        <p>Категория: {{ article.category.name }}</p>
+
+        <a class="btn btn-warning" href="{% url 'articles:exhibition_edit' article.id %}">Редактировать</a>
+
+        <form action="{% url 'articles:exhibition_delete' article.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Удалить</button>
+        </form>
+    {% else %}
+        <h1>Выставка пуста</h1>
+    {% endif %}
+{% endblock %}
