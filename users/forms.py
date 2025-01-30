@@ -27,6 +27,11 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
-class UserProfileForm(UserChangeForm):
+class UserProfileForm(forms.ModelForm):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'form-control', 'placeholder': 'Поле для изменения Эмейла'
+    }))
+    image = forms.ImageField(widget=forms.FileInput())
     class Meta:
-        fields = ('username', 'email', 'password')
+        model = User
+        fields = ('email', 'image')
