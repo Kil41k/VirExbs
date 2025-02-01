@@ -13,15 +13,8 @@ class ArticleCategory(models.Model):
 
 class Articles(models.Model):
     image = models.ImageField(upload_to='Exhibition_image')
-    name = models.CharField("введите название выставки",max_length=125)
-    description = models.TextField('описание фотографии', blank=True, null=True)
-    image_1 = models.ImageField(upload_to='Exhibition_image', blank=True, null=True)
-    description_1 = models.TextField('описание фотографии', blank=True, null=True)
-    image_2 = models.ImageField(upload_to='Exhibition_image', blank=True, null=True)
-    description_2 = models.TextField('описание фотографии', blank=True, null=True)
-    image_3 = models.ImageField(upload_to='Exhibition_image', blank=True, null=True)
-    description_3 = models.TextField('описание фотографии', blank=True, null=True)
-    image_4 = models.ImageField(upload_to='Exhibition_image', blank=True, null=True)
+    name = models.CharField(max_length=125)
+    description = models.TextField()
     category = models.ForeignKey(to=ArticleCategory, on_delete=models.PROTECT)
 
     def __str__(self):

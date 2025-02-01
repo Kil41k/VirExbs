@@ -6,5 +6,3 @@ from django.utils.timezone import now
 
 class User(AbstractUser):
     image = models.ImageField(upload_to='Exhibition_image', null=True, blank=True)
-    is_verified = models.BooleanField(default=False)
-    token = uuid.uuid4()

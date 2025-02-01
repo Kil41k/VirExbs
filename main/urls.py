@@ -2,18 +2,18 @@ from . import views
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import index, exhibitions, create, exhibition_detail, exhibition_edit, exhibition_delete
+from . import views
 
 app_name = 'articles'
 
 urlpatterns = [
-    path('', index, name='home'),
-    path('exhibitions/', exhibitions, name='exhibitions'),
-    path('exhibitions/category/<int:category_id>/', exhibitions, name='category'),
-    path('create/', create, name='create'),
-    path('exhibition/<int:id>/', exhibition_detail, name='exhibition_detail'),
-    path('exhibition/<int:id>/edit/', exhibition_edit, name='exhibition_edit'),
-    path('exhibition/<int:id>/delete/', exhibition_delete, name='exhibition_delete'),
+    path('', views.IndexView.as_view(), name='home'),
+    path('exhibitions/', views.ExhibitionsView.as_view(), name='exhibitions'),
+    path('exhibitions/category/<int:category_id>/', views.ExhibitionsView.as_view(), name='category'),
+    path('create/', views.ExbCreateView.as_view(), name='create'),
+    path('exhibition/<int:id>/', views.exhibition_detail, name='exhibition_detail'),
+    path('exhibition/<int:id>/edit/', views.exhibition_edit, name='exhibition_edit'),
+    path('exhibition/<int:id>/delete/', views.exhibition_delete, name='exhibition_delete'),
 
 ]
 

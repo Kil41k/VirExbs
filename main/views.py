@@ -1,37 +1,54 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from .models import Articles, ArticleCategory
 from .forms import ArticlesForm
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
+from .mixin.views import TitleMixin
 
-def index(request):
-    return render(request, 'main/home.html')
 
-def create(request):
-    if request.method == 'POST':
-        form = ArticlesForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('articles:exhibitions')
-        else:
-            print(form.errors)
-    else:
-        form = ArticlesForm()
-    return render(request, 'main/create.html', {'form': form})
+class IndexView(TitleMixin, TemplateView):
+    template_name = 'main/home.html'
+    title = 'Home page'
 
-def exhibitions(request, category_id=None):
-    if category_id:
-        try:
-            category = ArticleCategory.objects.get(id=category_id)
-            exhibition = Articles.objects.filter(category=category)
-        except ArticleCategory.DoesNotExist:
-            return HttpResponse("Category does not exist", status=404)
-    else:
-        exhibition = Articles.objects.all()
-    context = {
-        'categories': ArticleCategory.objects.all(),
-        'exhibition': exhibition,
-    }
-    return render(request, 'main/exhibition.html', context)
+
+class ExhibitionsView(TitleMixin, ListView):
+    model = Articles
+    template_name = 'main/exhibition.html'
+    paginate_by = 3
+    title = 'Exhibitions list'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.kwargs.get('category_id')
+        return queryset.filter(category_id=category_id) if category_id else queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['categories'] = ArticleCategory.objects.all()
+        return context
+
+
+class ExbCreateView(CreateView):
+    model = Articles
+    template_name = 'main/create.html'
+    title = 'Exb Create Page'
+    form_class = ArticlesForm
+
+
+
+
+# def create(request):
+#     if request.method == 'POST':
+#         form = ArticlesForm(data=request.POST, files=request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('articles:exhibitions')
+#         else:
+#             print(form.errors)
+#     else:
+#         form = ArticlesForm()
+#     return render(request, 'main/create.html', {'form': form})
 
 def exhibition_detail(request, id):
     article = get_object_or_404(Articles, id=id)

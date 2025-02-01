@@ -4,8 +4,8 @@
 
 {% block content %}
     {% if article %}
-        <img src="{{ article.image_4.url }}" alt="">
-        <h1>{{ article.description_3 }}</h1>
+        <img src="{{ article.image.url }}" alt="">
+        <h1>{{ article.name }}</h1>
         <p>Категория: {{ article.category.name }}</p>
 
         <a class="btn btn-warning" href="{% url 'articles:exhibition_edit' article.id %}">Редактировать</a>

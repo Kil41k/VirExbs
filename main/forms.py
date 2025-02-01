@@ -1,27 +1,16 @@
-from django.forms import ModelForm, TextInput
+from django import forms
 from .models import Articles
 
-class ArticlesForm(ModelForm):
-
+class ArticlesForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'Название'
+    }))
+    description = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'Описание'
+    }))
+    image = forms.ImageField(widget=forms.FileInput(attrs={
+        'class': 'form-control', 'placeholder': 'Вставьте изображение для выставки'
+    }))
     class Meta:
         model = Articles
-        fields = ['name', 'image', 'category', 'description', 'description_1', 'description_2', 'description_3', 'image_1',
-                  'image_2','image_3','image_4']
-
-        widgets = {
-            'name': TextInput(attrs={
-                'placeholder': 'Название'
-            }),
-            'description': TextInput(attrs={
-                'placeholder': 'Описание'
-            }),
-            'description_1': TextInput(attrs={
-                'placeholder': 'Описание'
-            }),
-            'description_2': TextInput(attrs={
-                'placeholder': 'Описание'
-            }),
-            'description_3': TextInput(attrs={
-                'placeholder': 'Описание'
-            }),
-        }
+        fields = ['name', 'image', 'category', 'description']
