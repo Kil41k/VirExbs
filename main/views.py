@@ -7,14 +7,9 @@ from django.views.generic.edit import CreateView
 from .mixin.views import TitleMixin
 
 
-class IndexView(TitleMixin, TemplateView):
-    template_name = 'main/home.html'
-    title = 'Home page'
-
-
 class ExhibitionsView(TitleMixin, ListView):
     model = Articles
-    template_name = 'main/exhibition.html'
+    template_name = 'main/index.html'
     paginate_by = 3
     title = 'Exhibitions list'
 

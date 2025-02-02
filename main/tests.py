@@ -8,14 +8,5 @@ class IndexViewTestCase(TestCase):
         response = self.client.get(path)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data['title'], 'Home page')
-        self.assertTemplateUsed(response, 'main/home.html')
-
-
-class ExhibitionsViewTestCase(TestCase):
-    def test_list(self):
-        path = reverse('articles:exhibitions')
-        response = self.client.get(path)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'main/exhibition.html')
+        self.assertEqual(response.context_data['title'], 'Exhibitions list')
+        self.assertTemplateUsed(response, 'main/index.html')
