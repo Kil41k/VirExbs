@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
-from .models import Articles, ArticleCategory
-from .forms import ArticlesForm
-from django.views.generic.base import TemplateView
+from .models import Articles, ArticleCategory, Comment
+from .forms import ArticlesForm, CommentForm
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
 from .mixin.views import TitleMixin
 
 
 class ExhibitionsView(TitleMixin, ListView):
     model = Articles
     template_name = 'main/index.html'
-    paginate_by = 3
+    paginate_by = 15
     title = 'Exhibitions list'
 
     def get_queryset(self):
@@ -23,31 +21,43 @@ class ExhibitionsView(TitleMixin, ListView):
         context['categories'] = ArticleCategory.objects.all()
         return context
 
+#
+# class ExbCreateView(TitleMixin, CreateView):
+#     model = Articles
+#     template_name = 'main/create.html'
+#     title = 'Exb Create Page'
+#     form_class = ArticlesForm
+#
 
-class ExbCreateView(CreateView):
-    model = Articles
-    template_name = 'main/create.html'
-    title = 'Exb Create Page'
-    form_class = ArticlesForm
-
-
-
-
-# def create(request):
-#     if request.method == 'POST':
-#         form = ArticlesForm(data=request.POST, files=request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('articles:exhibitions')
-#         else:
-#             print(form.errors)
-#     else:
-#         form = ArticlesForm()
-#     return render(request, 'main/create.html', {'form': form})
+def create(request):
+    if request.method == 'POST':
+        form = ArticlesForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            exb = form.save(commit=False)
+            exb.user = request.user
+            exb.save()
+            return redirect('articles:home')
+        else:
+            print(form.errors)
+    else:
+        form = ArticlesForm()
+    return render(request, 'main/create.html', {'form': form})
 
 def exhibition_detail(request, id):
     article = get_object_or_404(Articles, id=id)
-    return render(request, 'main/exhibition_detail.html', {'article': article})
+    comment = Comment.objects.filter(article=article)
+    if request.method == 'POST':
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            com = form.save(commit=False)
+            com.article = article
+            com.user = request.user
+            com.save()
+        else:
+            print(form.errors)
+    else:
+        form = CommentForm()
+    return render(request, 'main/exhibition_detail.html', {'article': article, 'comment': comment, 'form': form})
 
 
 def exhibition_edit(request, id):

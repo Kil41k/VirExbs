@@ -2,52 +2,71 @@
 {% load static %}
 
 {% block content %}
-    <div class="sidebar">
-        <div class="sidebar-header">Категории</div>
-        {% for category in categories %}
-            <a style="color: black;" href="{% url  'articles:category' category.id %}">{{ category.name }}</a>
-        {% endfor %}
+<div class="d-flex">
+    <div class="m-5">
+        <p>
+          <button class="btn btn-primary" style="width: 200px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+            Фильтры
+          </button>
+        </p>
+        <div style="min-height: 120px;">
+          <div class="collapse collapse-horizontal" id="collapseWidthExample">
+            <div class="card card-body" style="width: 300px;">
+                <a class="mb-3 btn btn-primary" href="#">По популярности</a>
+                <a class="mb-3 btn btn-primary" href="#">По дате</a>
+                <div class=" dropdown">
+                  <button class="w-100 btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    По категории
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li class="card card-body">
+                        {%for category in categories%}
+                        <a class="btn btn-primary mb-3" href="{%url 'articles:category' category.id%}">{{category.name}}</a>
+                        {%endfor%}
+                    </li>
+                  </ul>
+                </div>
+            </div>
+          </div>
+        </div>
     </div>
-
     <!-- Контент -->
-    <div class="container py-5" style="margin-left: 240px;"> <!-- Отступ для бокового меню -->
+    <div class="container py-5 p-5" style="margin-left: 20px;"> <!-- Отступ для бокового меню -->
         <h1 class="text-center mb-5">Выставки</h1>
         <div class="row gy-4">
             {% if object_list %}
-                {% for el in object_list %}
-                <!-- Карточка 1 -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="card bg-black">
-                        <img src="{{ el.image.url }}" alt="Выставка" class="card-img-top">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ el.name }}</h5>
-                            <a class="btn btn-light" href="{% url 'articles:exhibition_detail' id=el.id %}">Посмотреть выставку</a>
-                        </div>
-                    </div>
+            {% for el in object_list %}
+            <div class="card bg-light m-5" style="width: 18rem;">
+                <img src="{{ el.image.url }}" class="card-img-top mt-2 h-50" alt="...">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-dark fs-3">{{el.name}}</h5>
+                    <p class="card-text fs-5 text-start">{{el.description | truncatechars:50}}</p>
+                    <p class="card-text text-start"><small class="text-body-secondary">{{el.created}}</small></p>
+                    <a class="btn btn-success" href="{% url 'articles:exhibition_detail' id=el.id %}">Посмотреть выставку</a>
                 </div>
-                {% endfor %}
+            </div>
+            {% endfor %}
             {% else %}
                 <p>На этой странице пока нету выставок</p>
             {% endif %}
         </div>
     </div>
+</div>
 
-
-    <nav aria-label="...">
-  <ul class="pagination">
-      {% if page_obj.has_previous %}
-    <li class="page-item">
-      <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
-    </li>
-      {%endif%}
-      {%for page in paginator.page_range%}
-    <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
-      {%endfor%}
-      {% if page_obj.has_next %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
-    </li>
-      {%endif%}
-  </ul>
-</nav>
+<!--  <ul class="pagination">-->
+<!--      {% if page_obj.has_previous %}-->
+<!--    <li class="page-item">-->
+<!--      <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>-->
+<!--    </li>-->
+<!--      {%endif%}-->
+<!--      {%for page in paginator.page_range%}-->
+<!--    <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>-->
+<!--      {%endfor%}-->
+<!--      {% if page_obj.has_next %}-->
+<!--    <li class="page-item">-->
+<!--      <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>-->
+<!--    </li>-->
+<!--      {%endif%}-->
+<!--  </ul>-->
+</div>
 {% endblock %}

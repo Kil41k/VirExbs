@@ -3,18 +3,55 @@
 
 
 {% block content %}
-    {% if article %}
-        <img src="{{ article.image.url }}" alt="">
-        <h1>{{ article.name }}</h1>
-        <p>Категория: {{ article.category.name }}</p>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Main Image -->
+                <img src="{{article.image.url}}" class="img-fluid rounded shadow-sm mb-4" alt="Exhibition Image">
 
-        <a class="btn btn-warning" href="{% url 'articles:exhibition_edit' article.id %}">Редактировать</a>
+                <!-- Exhibition Details -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-3">{{article.name}}</h1>
+                    </div>
+                    <p class="text-muted">Created on {{article.created}} by <a href="#" class="text-decoration-none">{{article.user.username}}</a></p>
+                    <p class="lead">{{article.description}}</p>
+                </div>
 
-        <form action="{% url 'articles:exhibition_delete' article.id %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button class="btn btn-danger" type="submit">Удалить</button>
-        </form>
-    {% else %}
-        <h1>Выставка пуста</h1>
-    {% endif %}
+                <!-- Comments Section -->
+                <div class="mt-5">
+                    <h3 class="mb-4">Comments</h3>
+
+                    <!-- Comment Form -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form method="post">
+                                {%csrf_token%}
+                                <div class="mb-3">
+                                    {{form.text}}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Individual Comments -->
+                    <div class="comments">
+                        <!-- Comment 1 -->
+                        {%for com in comment%}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-subtitle mb-2 text-muted">{{com.user.username}}</h6>
+                                    <small class="text-muted">{{com.created}}</small>
+                                </div>
+                                <p class="card-text">{{com.text}}</p>
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
