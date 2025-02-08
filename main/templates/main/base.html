@@ -32,7 +32,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item text-light" href="{% url 'users:profile' %}">Профиль</a>
+                            <a class="dropdown-item text-dark" href="{% url 'users:profile' %}">Профиль</a>
                         </li>
                         <li><a class="dropdown-item text-ligh" href="orders/orders.html">Мои выставки</a></li>
                         {% if user.is_superuser or user.is_staff %}
