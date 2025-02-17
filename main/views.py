@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from .models import Articles, ArticleCategory, Comment
 from .forms import ArticlesForm, CommentForm
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 from .mixin.views import TitleMixin
 
 
@@ -21,7 +22,7 @@ class ExhibitionsView(TitleMixin, ListView):
         context['categories'] = ArticleCategory.objects.all()
         return context
 
-#
+
 # class ExbCreateView(TitleMixin, CreateView):
 #     model = Articles
 #     template_name = 'main/create.html'

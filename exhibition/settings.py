@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from dotenv import load_dotenv
 import os
 
@@ -6,6 +7,8 @@ from django.conf.global_settings import DEFAULT_FROM_EMAIL, STATICFILES_DIRS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -15,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -30,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_extensions',
 
     'main',
     'users',
@@ -133,8 +137,31 @@ AUTH_USER_MODEL = 'users.USER'
 
 # settings.py
 
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')      # Твоя почта
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')     # Пароль приложения для Gmail
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
+    'localhost'
     # ...
 ]
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+
+# cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}

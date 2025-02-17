@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('delete_acc/', views.delete_account, name='delete_acc'),
     path('edit_acc/', views.edit_acc, name='edit_acc'),
+    path('verify/<str:token>/', views.EmailVerificationView, name='verify'),
 ]
